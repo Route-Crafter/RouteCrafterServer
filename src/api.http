@@ -1,0 +1,92 @@
+### Recuperar todos los países
+GET http://localhost:1234/countries
+
+### Crear un nuevo país
+POST http://localhost:1234/countries
+Content-Type: application/json
+
+{
+    "name": "Argentina",
+    "iso": "AR"
+}
+
+### Eliminar un país
+DELETE http://localhost:1234/countries/3
+Content-Type: application/json
+
+### Recuperar estados por countryId
+GET http://localhost:1234/countries/1/states
+
+### Crear un estado
+POST http://localhost:1234/countries/1/states
+Content-Type: application/json
+
+{
+    "name": "Valle del Cauca"
+}
+
+### Eliminar un estado
+DELETE http://localhost:1234/states/4
+Content-Type: application/json
+
+### Recuperar ciudades de un estado
+GET http://localhost:1234/states/1/cities
+
+### Crear una ciudad
+POST http://localhost:1234/states/1/cities
+Content-Type: application/json
+
+{
+    "name": "Fusagasugá"
+}
+
+### Eliminar una ciudad
+DELETE http://localhost:1234/cities/5
+
+### Obtener las rutas de ua ciudad
+GET http://localhost:1234/cities/1/routes
+
+### Crear una nueva ruta
+POST http://localhost:1234/cities/1/routes
+Content-Type: application/json
+
+{
+    "name": "6",
+    "description": "Rio Magdalena -> La Esperanza" 
+}
+
+### Eliminar una ruta
+DELETE http://localhost:1234/routes/4008ac3e-8c2f-4a66-abcf-2e0966f39da7
+
+### Obtener las ejecuciones de una ruta
+GET http://localhost:1234/routes/b46be48f-7ea0-11f0-865b-0a0027000010/executions
+
+### Crear una nueva ejecución de ruta
+POST http://localhost:1234/routes/b46be48f-7ea0-11f0-865b-0a0027000010/executions
+Content-Type: application/json
+
+{
+    "licensePlate": "ABC123",
+    "initTime": "2025-07-28 16:23"
+}
+
+### Actualizar la ejecución de ruta para ingresar el endTime y los wayPoints
+PATCH http://localhost:1234/executions/6
+Content-Type: application/json
+
+{
+    "endTime": "2025-07-28 17:02",
+    "routeId": "b46be48f-7ea0-11f0-865b-0a0027000010",
+    "points": [
+        {"lat": 4.635830, "lon": -74.092419, "speed": 10.0},
+        {"lat": 4.636092, "lon": -74.092621, "speed": 11.02},
+        {"lat": 4.636245, "lon": -74.092747, "speed": 5.01},
+        {"lat": 4.436135, "lon": -74.092965, "speed": 5.01},
+        {"lat": 4.636001, "lon": -74.093134, "speed": 5.01},
+        {"lat": 4.635838, "lon": -74.093047, "speed": 5.01},
+        {"lat": 4.635614, "lon": -74.092898, "speed": 5.01}
+    ]
+}
+
+### Eliminar una ejecución de ruta
+DELETE http://localhost:1234/executions/5

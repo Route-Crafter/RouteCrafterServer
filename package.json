@@ -1,0 +1,29 @@
+{
+  "name": "routes",
+  "version": "1.0.0",
+  "description": "\"Una app para guardar los caminos formados por las geolocalizaciones de distintos recorridos de transporte alrededor del mundo.\"",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server_sql_rel.js",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --testEnvironment=node",
+    "dev:sql": "node --watch server_sql_dev.js"
+  },
+  "author": "Jhonatan Amórtegui",
+  "license": "ISC",
+  "dependencies": {
+    "@turf/turf": "^7.2.0",
+    "cors": "2.8.5",
+    "dotenv": "17.2.0",
+    "express": "5.1.0",
+    "lodash": "^4.17.21",
+    "mysql2": "3.14.2",
+    "undici": "^7.13.0",
+    "zod": "4.0.10"
+  },
+  "devDependencies": {
+    "chai": "^5.2.1",
+    "jest": "^30.0.5",
+    "sinon": "^21.0.0"
+  }
+}
