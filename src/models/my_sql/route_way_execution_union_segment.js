@@ -7,7 +7,7 @@ export class RouteWayExecutionUnionSegmentModel {
         const [segments] = await this.connection.query(
             `SELECT p1, p2
                 FROM route_way_executions_union_segments
-                WHERE route_id = ? AND way_id = ?
+                WHERE route_id = UUID_TO_BIN(?) AND way_id = ?
             `,
             [routeId, wayId]
         )

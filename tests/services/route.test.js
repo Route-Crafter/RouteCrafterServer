@@ -168,12 +168,18 @@ describe('RouteService', () => {
             wayId = 100
         })
 
+        it('Cuando el wayId no se encuentra en el orderedWayIds del input', async () => {
+            localOrder = [90, wayId, 101]
+            input = {
+                orderedWayIds: [90, 91, 101, 103]
+            }
+        })
+
         it('Cuando el way aparece en el localOrder y conserva el mismo orden', async () => {
             localOrder = [90, wayId, 101]
             input = {
                 orderedWayIds: [90, wayId, 101, 103]
             }
-
             await routeService.updateLocalOrder({
                 input,
                 routeId,

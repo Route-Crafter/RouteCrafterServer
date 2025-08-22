@@ -9,7 +9,7 @@ export class RouteWayModel {
                 way_id as wayId,
                 ordered_position as orderedPosition
             FROM routes_ways
-            WHERE route_id = ?
+            WHERE route_id = UUID_TO_BIN(?)
             `,
             [routeId]
         )
@@ -26,12 +26,12 @@ export class RouteWayModel {
     }
 
     create = async ({ input, routeId, wayId }) => {
-        const [
+        const {
             orderedPosition
-        ] = input
+        } = input
         await this.connection.query(
             `INSERT INTO routes_ways (route_id, way_id, ordered_position)
-                VALUES (?, ?,?)
+                VALUES (UUID_TO_BIN(?), ?, ?)
             `,
             [routeId, wayId, orderedPosition]
         )
@@ -44,7 +44,7 @@ export class RouteWayModel {
         await this.connection.query(
             `UPDATE routes_ways
                 SET ordered_position = ?
-                WHER#E route_id = ? AND way_id = ?
+                WHER#E route_id = UUID_TO_BIN(?) AND way_id = ?
             `,
             [orderedPosition, routeId, wayId]
         )

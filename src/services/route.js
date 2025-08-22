@@ -105,27 +105,30 @@ export class RouteService {
     updateLocalOrder = async ({ input, routeId, wayId, localOrder }) => {
         const wayLocalOrder = localOrder.indexOf(wayId)
         const wayOrder = input.orderedWayIds.indexOf(wayId)
-        if(wayLocalOrder != -1){
-            if(wayLocalOrder !== wayOrder){
-                await this.routeWayModel.update(
-                    {
-                        input: {
-                            orderedPosition: wayOrder
-                        },
-                        routeId,
-                        wayId
-                    }
-                )
+        if(wayOrder != -1){
+            if(wayLocalOrder != -1){
+                if(wayLocalOrder !== wayOrder){
+                    await this.routeWayModel.update(
+                        {
+                            input: {
+                                orderedPosition: wayOrder
+                            },
+                            routeId,
+                            wayId
+                        }
+                    )
+                }
+            } else {
+                await this.routeWayModel.create({
+                    input: {
+                        orderedPosition: wayOrder
+                    },
+                    routeId,
+                    wayId
+                })
             }
-        } else {
-            await this.routeWayModel.create({
-                input: {
-                    orderedPosition: wayOrder
-                },
-                routeId,
-                wayId
-            })
         }
+        
     }
 
     getRouteById = async ({ id }) => {

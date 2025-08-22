@@ -59,10 +59,10 @@ Content-Type: application/json
 DELETE http://localhost:1234/routes/4008ac3e-8c2f-4a66-abcf-2e0966f39da7
 
 ### Obtener las ejecuciones de una ruta
-GET http://localhost:1234/routes/b46be48f-7ea0-11f0-865b-0a0027000010/executions
+GET http://localhost:1234/routes/96a1632e-1087-4de6-a8f8-1cd7f7b925f8/executions
 
 ### Crear una nueva ejecución de ruta
-POST http://localhost:1234/routes/b46be48f-7ea0-11f0-865b-0a0027000010/executions
+POST http://localhost:1234/routes/96a1632e-1087-4de6-a8f8-1cd7f7b925f8/executions
 Content-Type: application/json
 
 {
@@ -71,17 +71,17 @@ Content-Type: application/json
 }
 
 ### Actualizar la ejecución de ruta para ingresar el endTime y los wayPoints
-PATCH http://localhost:1234/executions/6
+PATCH http://localhost:1234/executions/14
 Content-Type: application/json
 
 {
     "endTime": "2025-07-28 17:02",
-    "routeId": "b46be48f-7ea0-11f0-865b-0a0027000010",
+    "routeId": "96a1632e-1087-4de6-a8f8-1cd7f7b925f8",
     "points": [
         {"lat": 4.635830, "lon": -74.092419, "speed": 10.0},
         {"lat": 4.636092, "lon": -74.092621, "speed": 11.02},
         {"lat": 4.636245, "lon": -74.092747, "speed": 5.01},
-        {"lat": 4.436135, "lon": -74.092965, "speed": 5.01},
+        {"lat": 4.636135, "lon": -74.092965, "speed": 5.01},
         {"lat": 4.636001, "lon": -74.093134, "speed": 5.01},
         {"lat": 4.635838, "lon": -74.093047, "speed": 5.01},
         {"lat": 4.635614, "lon": -74.092898, "speed": 5.01}
