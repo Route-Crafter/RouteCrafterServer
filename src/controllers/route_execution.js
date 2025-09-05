@@ -62,6 +62,7 @@ export class RouteExecutionController{
 
     update = async (req, res) => {
         const { id } = req.params
+        const { routeId } = req.query
         const result = this.validateEndRouteExecution(req.body)
         if(result.error){
             return res.status(400).json({
@@ -76,6 +77,10 @@ export class RouteExecutionController{
         const createdPoints = await this.routeExecutionPointModel.createList({
             inputs: points,
             routeExecutionId: id
+        })
+        await this.updateRoute({
+            routeId,
+            points: createdPoints
         })
         if(!updatedExecution || !createdPoints){
             return res.status(500).json({
