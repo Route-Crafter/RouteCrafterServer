@@ -30,7 +30,7 @@ describe('GeoAggregationAdapter real impl', () => {
                 {"lat": 4.635830, "lon": -74.092419, "speed": 10.0},
                 {"lat": 4.636092, "lon": -74.092621, "speed": 11.02},
                 {"lat": 4.636245, "lon": -74.092747, "speed": 5.01},
-                {"lat": 4.436135, "lon": -74.092965, "speed": 5.01},
+                {"lat": 4.636135, "lon": -74.092965, "speed": 5.01},
                 {"lat": 4.636001, "lon": -74.093134, "speed": 5.01},
                 {"lat": 4.635838, "lon": -74.093047, "speed": 5.01},
                 {"lat": 4.635614, "lon": -74.092898, "speed": 5.01}
@@ -53,7 +53,7 @@ describe('GeoAggregationAdapter real impl', () => {
             for(let w of result.list){
                 printedValue += `${w.name} - ${w.coords.length}\n`
             }
-            //console.log(printedValue)
+            console.log(`list length: ${result.list.length}`)
             console.log('++++++++++ ways dict')
             printedValue = ``
             for(let [wayId, way] of Object.entries(result.dict)) {
