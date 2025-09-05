@@ -104,7 +104,14 @@ export class GeoAggregationAdapter {
   buildOverpassQL = (bbox) => {
       return `
       [out:json][timeout:180];
-      way["highway"](${bbox[1]},${bbox[0]},${bbox[3]},${bbox[2]});
+      (
+        way
+          ["highway"~"^(motorway|trunk|primary|secondary|tertiary|unclassified|residential|living_street)$"]
+          ["area"!="yes"]
+          ["construction"!~".*"]
+          ["proposed"!~".*"]
+          (${bbox[1]},${bbox[0]},${bbox[3]},${bbox[2]});
+      );
       out tags geom;
       `;
   }
