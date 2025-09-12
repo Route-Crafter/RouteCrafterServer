@@ -51,18 +51,18 @@ POST http://localhost:1234/cities/1/routes
 Content-Type: application/json
 
 {
-    "name": "6",
+    "name": "11",
     "description": "Rio Magdalena -> La Esperanza" 
 }
 
 ### Eliminar una ruta
-DELETE http://localhost:1234/routes/4008ac3e-8c2f-4a66-abcf-2e0966f39da7
+DELETE http://localhost:1234/routes/6b77a104-164f-421f-8dec-1c15ebb8d60c
 
 ### Obtener las ejecuciones de una ruta
-GET http://localhost:1234/routes/96a1632e-1087-4de6-a8f8-1cd7f7b925f8/executions
+GET http://localhost:1234/routes/e66f9621-d93a-4621-bed3-5cf75927bcdc/executions
 
 ### Crear una nueva ejecución de ruta
-POST http://localhost:1234/routes/96a1632e-1087-4de6-a8f8-1cd7f7b925f8/executions
+POST http://localhost:1234/routes/e66f9621-d93a-4621-bed3-5cf75927bcdc/executions
 Content-Type: application/json
 
 {
@@ -71,12 +71,11 @@ Content-Type: application/json
 }
 
 ### Actualizar la ejecución de ruta para ingresar el endTime y los wayPoints
-PATCH http://localhost:1234/executions/14
+PATCH http://localhost:1234/executions/2?routeId=e66f9621-d93a-4621-bed3-5cf75927bcdc
 Content-Type: application/json
 
 {
     "endTime": "2025-07-28 17:02",
-    "routeId": "96a1632e-1087-4de6-a8f8-1cd7f7b925f8",
     "points": [
         {"lat": 4.635830, "lon": -74.092419, "speed": 10.0},
         {"lat": 4.636092, "lon": -74.092621, "speed": 11.02},

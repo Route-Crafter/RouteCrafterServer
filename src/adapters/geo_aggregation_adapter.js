@@ -32,7 +32,10 @@ export class GeoAggregationAdapter {
       // devuelve { list: Way[], dict: { [wayId]: { coords, name, highway } }, bbox }
       // Puedes mezclar con route.ways existentes (merge) para no perder datos.
       const bboxFromPoints = this.computeBBox(points, 180);
+      console.log(`------------->onGeoAggregationAdapter\ninitial route bbox: ${JSON.stringify(route.bbox)}`)
+      console.log(`------------->onGeoAggregaionAdapter\nbbox from points: ${JSON.stringify(bboxFromPoints)}`)
       const bbox = route?.bbox ? this.mergeBBoxes(route.bbox, bboxFromPoints) : bboxFromPoints;
+      console.log(`------------->onGeoAggregaionAdapter\nbbox after mergeBBoxes: ${JSON.stringify(bbox)}`)
       const overpassUrl = process.env.OVERPASS_URL || this.defaultOverpassUrl;
       const ways = await this.fetchOverpassWays(bbox, overpassUrl);
       const dict = {};
@@ -188,6 +191,7 @@ export class GeoAggregationAdapter {
       const ls = this.lineString(w.coords);
       // location en km si units='kilometers'
       const np = this.nearestPointOnLine(ls, [p.lon, p.lat], { units: 'kilometers' });
+      (ls, [p.lon, p.lat], { units: 'kilometers' });
       const snapped = { lon: np.geometry.coordinates[0], lat: np.geometry.coordinates[1] };
       const d = this.distance([p.lon, p.lat], [snapped.lon, snapped.lat], { units: 'meters' });
       if (d < bestDist) {

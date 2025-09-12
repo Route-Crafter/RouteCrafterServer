@@ -149,18 +149,21 @@ export class RouteService {
                 union
             })
         }
-        return {
+        const allRoute = {
             ...route,
-            bbox: [
-                route.minLon,
-                route.minLat,
-                route.maxLon,
-                route.maxLat
-            ],
             ways,
             union,
             orderedWayIds
         }
+        if(allRoute.minLon && allRoute.maxLon && allRoute.minLat && allRoute.maxLat){
+            allRoute.bbox = [
+                route.minLon,
+                route.minLat,
+                route.maxLon,
+                route.maxLat
+            ]
+        }
+        return allRoute
     }
 
     formatDataForWay = async ({ routeId, routeWay, orderedWayIds, ways, union }) => {

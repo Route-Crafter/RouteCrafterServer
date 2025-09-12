@@ -63,6 +63,7 @@ export class RouteExecutionController{
     update = async (req, res) => {
         const { id } = req.params
         const { routeId } = req.query
+        console.log(`*************\nrouteId:${routeId}`)
         const result = this.validateEndRouteExecution(req.body)
         if(result.error){
             return res.status(400).json({
@@ -96,6 +97,7 @@ export class RouteExecutionController{
     //TODO: Implementar cuando esté terminado
     updateRoute = async ({ routeId, points }) => {
         const route = await this.routeService.getRouteById({ id: routeId })
+        console.log(`----------------> on RouteExecutionController\ninit route:${JSON.stringify(route)}`)
         await this.geoAggregationService.insertPointsInToRoute({ points, route })
         // Invalidar cache y guardar
         route.polylineCache = null;
