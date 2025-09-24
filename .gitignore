@@ -26,3 +26,6 @@ build/
 .idea/
 *.sublime-project
 *.sublime-workspace
+
+# Other files
+gps_points.js

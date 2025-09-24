@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import mysql from 'mysql2/promise'
 import { request } from 'undici';
 import { lineString } from '@turf/helpers';
@@ -12,11 +13,11 @@ import { GeoAggregationService } from './src/services/geo_aggregation.js'
 import { RouteService } from './src/services/route.js'
 
 const connection = await mysql.createConnection({
-    host: 'mysql-routecrafter.alwaysdata.net',
-    user: 'root',
-    database: 'routesdb',
-    password: '',
-    port: 3306
+    host: process.env.DB_HOST,
+    database: process.env.DB_NAME,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    port: process.env.DB_PORT
 })
 const countryModel = new CountryModel({connection})
 const stateModel = new StateModel({connection})

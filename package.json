@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node server_sql_rel.js",
+    "start": "node server_sql_prod.js",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --testEnvironment=node",
     "dev:sql": "node --watch server_sql_dev.js"
   },
