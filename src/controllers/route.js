@@ -1,10 +1,47 @@
 export class RouteController{
-    constructor({countryModel, stateModel, cityModel, routeModel, validateRoute}){
+    constructor({
+        countryModel,
+        stateModel,
+        cityModel,
+        routeModel,
+        routeService,
+        geoAggregationService,
+        validateRoute
+    }){
         this.countryModel = countryModel
         this.stateModel = stateModel
         this.cityModel = cityModel
         this.routeModel = routeModel
+        this.routeService = routeService
+        this.geoAggregationService = geoAggregationService
         this.validateRoute = validateRoute
+    }
+
+    getById = async (req, res) => {
+        const { routeId } = req.params
+        const route = await this.routeService.getRouteById({ id: routeId })
+        const coords = this.geoAggregationService.getCoordsFromUnion({
+            union: route.union || {},
+            waysDict: route.ways || {},
+            orderedWayIds: route.orderedWayIds || []
+        })
+        route.coords = coords
+        /*
+        //TODO: Implementar cuando sepa cómo manejar el tema del caché
+        route.polylineCache = coords;
+        route.updatedAt = new Date().toISOString();
+        await this.routeService.updatePolylineCache({
+            input: route,
+            id: route.id
+        })
+        */
+        res.status(200).json({
+            id: route.id,
+            name: route.name,
+            description: route.description,
+            cityId: route.cityId,
+            coords: route.coords
+        })
     }
 
     getAll = async (req, res) => {

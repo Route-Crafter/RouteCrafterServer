@@ -32,10 +32,7 @@ export class GeoAggregationAdapter {
       // devuelve { list: Way[], dict: { [wayId]: { coords, name, highway } }, bbox }
       // Puedes mezclar con route.ways existentes (merge) para no perder datos.
       const bboxFromPoints = this.computeBBox(points, 180);
-      console.log(`------------->onGeoAggregationAdapter\ninitial route bbox: ${JSON.stringify(route.bbox)}`)
-      console.log(`------------->onGeoAggregaionAdapter\nbbox from points: ${JSON.stringify(bboxFromPoints)}`)
       const bbox = route?.bbox ? this.mergeBBoxes(route.bbox, bboxFromPoints) : bboxFromPoints;
-      console.log(`------------->onGeoAggregaionAdapter\nbbox after mergeBBoxes: ${JSON.stringify(bbox)}`)
       const overpassUrl = process.env.OVERPASS_URL || this.defaultOverpassUrl;
       const ways = await this.fetchOverpassWays(bbox, overpassUrl);
       const dict = {};
@@ -308,4 +305,83 @@ export class GeoAggregationAdapter {
     return out;
   }
 
+
+  buildPolylineFromUnion = (union, waysDict, orderedWayIds) => {
+    const coords = [];
+    const order = orderedWayIds?.length ? orderedWayIds : Object.keys(union);
+    for (const wayId of order) {
+      const intervals = union[wayId];
+      const way = waysDict[wayId];
+      if (!intervals || !way?.coords || way.coords.length < 2) continue;
+
+      for (const [sA, sB] of intervals) {
+        const sub = this.cutLineByS(way.coords, sA, sB);
+        if (!sub.length) continue;
+
+        if (coords.length) {
+          const last = coords[coords.length - 1];
+          const first = sub[0];
+          const dup = Math.abs(last[0] - first[0]) < 1e-12 && Math.abs(last[1] - first[1]) < 1e-12;
+          if (dup) for (let i = 1; i < sub.length; i++) coords.push(sub[i]);
+          else for (let i = 0; i < sub.length; i++) coords.push(sub[i]);
+        } else {
+          for (let i = 0; i < sub.length; i++) coords.push(sub[i]);
+        }
+      }
+    }
+    return coords; // [[lon,lat]...]
+  }
+
+  cutLineByS = (coords, sA, sB) => {
+    if (!coords || coords.length < 2) return [];
+    const L = this.cumulativeLengthsMeters(coords);
+    const total = L[L.length - 1];
+    let from = sA, to = sB, reverse = false;
+    if (to < from) { const t = from; from = to; to = t; reverse = true; }
+    if (to < 0 || from > total) return [];
+    if (from < 0) from = 0;
+    if (to > total) to = total;
+
+    const startPt = this.interpolatePointByS(coords, L, from);
+    const endPt = this.interpolatePointByS(coords, L, to);
+
+    const out = [startPt];
+    for (let i = 1; i < coords.length; i++) {
+      const sHere = L[i];
+      if (sHere > from && sHere < to) out.push([coords[i][0], coords[i][1]]);
+    }
+    out.push(endPt);
+    if (reverse) out.reverse();
+    return out;
+  }
+
+  cumulativeLengthsMeters = (coords) => {
+    const L = [];
+    let acc = 0;
+    for (let i = 0; i < coords.length; i++) {
+      if (i === 0) L.push(0);
+      else {
+        acc += this.distance(coords[i - 1], coords[i], { units: 'meters' });
+        L.push(acc);
+      }
+    }
+    return L;
+  }
+
+  interpolatePointByS = (coords, L, s) => {
+    if (s <= 0){
+      return [coords[0][0], coords[0][1]]
+    }
+    const total = L[L.length - 1];
+    if (s >= total){
+      return [coords[coords.length - 1][0], coords[coords.length - 1][1]]
+    }
+    let i = 1;
+    while (i < L.length && L[i] < s) i++;
+    const s0 = L[i - 1], s1 = L[i];
+    const t = (s - s0) / (s1 - s0);
+    const x = coords[i - 1][0] + t * (coords[i][0] - coords[i - 1][0]);
+    const y = coords[i - 1][1] + t * (coords[i][1] - coords[i - 1][1]);
+    return [x, y];
+}
 }
