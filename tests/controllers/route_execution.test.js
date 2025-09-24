@@ -150,8 +150,20 @@ describe('RouteExecutionController', () => {
     })
 
     describe('update', () => {
+
+        let routeId
+
+        beforeEach(() => {
+            routeId = 101
+        })
+
         it('Cuando la validación de la información sale mal', async () => {
-            req.params = {id: 100}
+            req.params = {
+                id: 100
+            }
+            req.query = {
+                routeId
+            }
             req.body = {controller: []}
             const errorMessage = {
                 reason: 'Hubo un mal problema'
@@ -170,7 +182,12 @@ describe('RouteExecutionController', () => {
 
         it('Cuando la execution no se actualizó', async () => {
             const id = 100
-            req.params = {id: id}
+            req.params = {
+                id
+            }
+            req.query = {
+                routeId
+            }
             const updatedExecution = {endTime: '2025-05-01 12:25', wayPoints: []}
             req.body = updatedExecution
             validateEndRouteExecutionMock.mockReturnValue({
@@ -178,6 +195,7 @@ describe('RouteExecutionController', () => {
             })
             routeExecutionModelMock.update.mockResolvedValue(false)
             routeExecutionPointModelMock.createList.mockResolvedValue([{id: 1, name: '1'}])
+            routeExecutionController.updateRoute = jest.fn()
             await routeExecutionController.update(req, res)
             expect(routeExecutionModelMock.update).toHaveBeenCalledWith({
                 input: {endTime: updatedExecution.endTime},
@@ -191,7 +209,12 @@ describe('RouteExecutionController', () => {
 
         it('Cuando los points no se actualizaron', async () => {
             const id = 100
-            req.params = {id: id}
+            req.params = {
+                id
+            }
+            req.query = {
+                routeId
+            }
             const points = [{id: 1, lat: 100, lon: 200}]
             const updatedExecution = {endTime: '2025-05-01 12:25', points}
             req.body = updatedExecution
@@ -202,8 +225,10 @@ describe('RouteExecutionController', () => {
                 id: 1001,
                 ...updatedExecution
             }
+            
             routeExecutionModelMock.update.mockResolvedValue(returnedUpdatedExecution)
             routeExecutionPointModelMock.createList.mockResolvedValue(false)
+            routeExecutionController.updateRoute = jest.fn()
             await routeExecutionController.update(req, res)
             expect(routeExecutionModelMock.update).toHaveBeenCalledWith({
                 input: {endTime: updatedExecution.endTime},
@@ -222,7 +247,12 @@ describe('RouteExecutionController', () => {
         it('Cuando los points sí se actualizaron', async () => {
             routeExecutionController.updateRoute = jest.fn()
             const id = 100
-            req.params = {id: id}
+            req.params = {
+                id
+            }
+            req.query = {
+                routeId
+            }
             const points = [{id: 1, lat: 100, lon: 200}]
             const updatedExecution = {
                 endTime: '2025-05-01 12:25',
@@ -239,6 +269,7 @@ describe('RouteExecutionController', () => {
             }
             routeExecutionModelMock.update.mockResolvedValue(returnedUpdatedExecution)
             routeExecutionPointModelMock.createList.mockResolvedValue(points)
+            routeExecutionController.updateRoute = jest.fn()
             await routeExecutionController.update(req, res)
             expect(routeExecutionModelMock.update).toHaveBeenCalledWith({
                 input: {endTime: updatedExecution.endTime},
@@ -249,7 +280,7 @@ describe('RouteExecutionController', () => {
                 routeExecutionId: id
             })
             expect(routeExecutionController.updateRoute).toHaveBeenCalledWith({
-                routeId: 1,
+                routeId,
                 points
             })
             expect(res.status).toHaveBeenCalledWith(201)

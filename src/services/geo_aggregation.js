@@ -20,4 +20,16 @@ export class GeoAggregationService {
             route.orderedWayIds = ids;
         }
     }
+
+    getCoordsFromUnion = ({ union, waysDict, orderedWayIds }) => {
+        const rawCoords = this.adapter.buildPolylineFromUnion(union, waysDict, orderedWayIds)
+        const coords = []
+        for(let c of rawCoords) {
+            coords.push({
+                lon: c[0],
+                lat: c[1]
+            })
+        }
+        return coords
+    }
 }

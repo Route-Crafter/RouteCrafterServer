@@ -1,7 +1,7 @@
 import { beforeEach, describe, jest } from '@jest/globals'
 import { GeoAggregationService } from '../../src/services/geo_aggregation'
 
-describe('GeoAgregationService', () => {
+describe('GeoAgregationService mocked', () => {
     let geoAggregationService
     let adapter
 

@@ -51,18 +51,21 @@ POST http://localhost:1234/cities/1/routes
 Content-Type: application/json
 
 {
-    "name": "6",
+    "name": "11",
     "description": "Rio Magdalena -> La Esperanza" 
 }
 
+### Obtener una ruta por id
+GET http://localhost:1234/routes/e66f9621-d93a-4621-bed3-5cf75927bcdc
+
 ### Eliminar una ruta
-DELETE http://localhost:1234/routes/4008ac3e-8c2f-4a66-abcf-2e0966f39da7
+DELETE http://localhost:1234/routes/6b77a104-164f-421f-8dec-1c15ebb8d60c
 
 ### Obtener las ejecuciones de una ruta
-GET http://localhost:1234/routes/b46be48f-7ea0-11f0-865b-0a0027000010/executions
+GET http://localhost:1234/routes/e66f9621-d93a-4621-bed3-5cf75927bcdc/executions
 
 ### Crear una nueva ejecución de ruta
-POST http://localhost:1234/routes/b46be48f-7ea0-11f0-865b-0a0027000010/executions
+POST http://localhost:1234/routes/e66f9621-d93a-4621-bed3-5cf75927bcdc/executions
 Content-Type: application/json
 
 {
@@ -71,20 +74,42 @@ Content-Type: application/json
 }
 
 ### Actualizar la ejecución de ruta para ingresar el endTime y los wayPoints
-PATCH http://localhost:1234/executions/6
+PATCH http://localhost:1234/executions/2?routeId=e66f9621-d93a-4621-bed3-5cf75927bcdc
 Content-Type: application/json
 
 {
     "endTime": "2025-07-28 17:02",
-    "routeId": "b46be48f-7ea0-11f0-865b-0a0027000010",
     "points": [
         {"lat": 4.635830, "lon": -74.092419, "speed": 10.0},
         {"lat": 4.636092, "lon": -74.092621, "speed": 11.02},
         {"lat": 4.636245, "lon": -74.092747, "speed": 5.01},
-        {"lat": 4.436135, "lon": -74.092965, "speed": 5.01},
+        {"lat": 4.636135, "lon": -74.092965, "speed": 5.01},
         {"lat": 4.636001, "lon": -74.093134, "speed": 5.01},
         {"lat": 4.635838, "lon": -74.093047, "speed": 5.01},
         {"lat": 4.635614, "lon": -74.092898, "speed": 5.01}
+    ]
+}
+
+### Actualizar ejecución de ruta con recorrido parcial Girardot
+PATCH http://localhost:1234/executions/2?routeId=e66f9621-d93a-4621-bed3-5cf75927bcdc
+Content-Type: application/json
+
+{
+    "endTime": "2025-07-28 17:02",
+    "points": [
+        {"lat":4.3101983,"lon":-74.8079667,"speed":4.8975067138671875},
+        {"lat":4.3101983,"lon":-74.8079667,"speed":4.8975067138671875},
+        {"lat":4.3101834,"lon":-74.8077915,"speed":4.897542953491211},
+        {"lat":4.3101673,"lon":-74.8076178,"speed":4.8977437019348145},
+        {"lat":4.3100916,"lon":-74.8075231,"speed":3.791365146636963},
+        {"lat":4.3099851,"lon":-74.8075302,"speed":3.7914040088653564},
+        {"lat":4.3098436,"lon":-74.8075402,"speed":3.791402578353882},
+        {"lat":4.3097097,"lon":-74.8075469,"speed":3.791391372680664},
+        {"lat":4.3095735,"lon":-74.8075552,"speed":3.7913975715637207},
+        {"lat":4.3095002,"lon":-74.8074583,"speed":5.0262250900268555},
+        {"lat":4.3094864,"lon":-74.807319,"speed":5.025989532470703},
+        {"lat":4.3094697,"lon":-74.8071388,"speed":5.025970458984375},
+        {"lat":4.3094501,"lon":-74.8069324,"speed":5.026230335235596}
     ]
 }
 

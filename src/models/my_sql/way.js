@@ -24,13 +24,13 @@ export class WayModel{
             maxSpeedKmh
         } = input
         await this.connection.query(`
-            INSERT INTO ways (id, name, highway, max_speed_kmh)
+            INSERT IGNORE INTO ways (id, name, highway, max_speed_kmh)
                 VALUES (?, ?, ?, ?)
             `,
             [id, name, highway, maxSpeedKmh]
         )
         const [ways] = await this.connection.query(
-            `SELECT * FROM highways
+            `SELECT * FROM ways
                 WHERE id = (SELECT LAST_INSERT_ID()) 
             `
         )

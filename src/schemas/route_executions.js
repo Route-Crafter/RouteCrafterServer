@@ -28,11 +28,7 @@ const endRouteExecutionSchema = z.object({
         {
             message: "El formato de los puntos del recorrido es incorrecto"
         }
-    ),
-    routeId: z.string({
-        invalid_type: "Formato del id de la ruta inválido",
-        required_error: "El id de la ruta es requerido"
-    })
+    )
 })
 
 export function validateInitRouteExecution(object) {

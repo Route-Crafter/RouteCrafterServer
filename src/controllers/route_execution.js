@@ -62,7 +62,7 @@ export class RouteExecutionController{
 
     update = async (req, res) => {
         const { id } = req.params
-        const { routeId } = req.body
+        const { routeId } = req.query
         const result = this.validateEndRouteExecution(req.body)
         if(result.error){
             return res.status(400).json({
@@ -78,18 +78,22 @@ export class RouteExecutionController{
             inputs: points,
             routeExecutionId: id
         })
+        await this.updateRoute({
+            routeId,
+            points: createdPoints
+        })
         if(!updatedExecution || !createdPoints){
             return res.status(500).json({
                 message: 'No se pudo actualizar el elemento'
             })
         }
-        await this.updateRoute({ routeId, points })        
         return res.status(201).json({
             ...updatedExecution,
             points: createdPoints
         })
     }
 
+    //TODO: Implementar cuando esté terminado
     updateRoute = async ({ routeId, points }) => {
         const route = await this.routeService.getRouteById({ id: routeId })
         await this.geoAggregationService.insertPointsInToRoute({ points, route })

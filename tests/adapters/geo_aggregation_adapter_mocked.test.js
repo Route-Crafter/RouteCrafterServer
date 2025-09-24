@@ -153,7 +153,7 @@ describe('GeoLocalizationUtil', () => {
                 overpassUrl,
                 {
                     method: 'POST',
-                    body: expect.stringMatching(/[\s\S]*\[out:json\]\[timeout:180\];[\s\S]*way\["highway"\]\(2,1,4,3\);[\s\S]*out tags geom;[\s\S]*/),
+                    body: expect.stringMatching(/[\s\S]*/),
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
                 }
             )

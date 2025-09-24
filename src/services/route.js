@@ -17,6 +17,18 @@ export class RouteService {
         return await this.routeModel.create({input, cityId})
     }
 
+    updatePolylineCache = async ({ input, id }) => {
+        let { polylineCache, updatedAt } = input
+        polylineCache = polylineCache.toString()
+        await this.routeModel.update({
+            input: {
+                polylineCache,
+                updatedAt
+            },
+            id
+        })
+    }
+
     updateRoute = async ({ input, id }) => {
         const bbox = {
             minLon: input.bbox[0],
@@ -28,9 +40,14 @@ export class RouteService {
             input: bbox,
             id
         })
-        const localOrder = await this.routeWayModel.getAllByRouteId({
-            routeId: id
-        })
+        const localOrder = ( 
+            await this.routeWayModel.getAllByRouteId({
+                routeId: id
+            }) 
+        )
+            .sort((a, b) => a.orderedPosition - b.orderedPosition)
+            .map(item => item.wayId);
+        console.log(`*************** local order: ${JSON.stringify(localOrder)}`)
         for(let [wayId, way] of Object.entries(input.ways)){
             wayId = Number(wayId)
             this.updateByWay({
@@ -103,29 +120,37 @@ export class RouteService {
     }
 
     updateLocalOrder = async ({ input, routeId, wayId, localOrder }) => {
+        console.log(`-+-+-+-+-+-+-+-+ update local order\nwayId:${wayId}`)
         const wayLocalOrder = localOrder.indexOf(wayId)
         const wayOrder = input.orderedWayIds.indexOf(wayId)
-        if(wayLocalOrder != -1){
-            if(wayLocalOrder !== wayOrder){
-                await this.routeWayModel.update(
-                    {
-                        input: {
-                            orderedPosition: wayOrder
-                        },
-                        routeId,
-                        wayId
-                    }
-                )
+        if(wayOrder !== -1){
+            console.log(`**************** way order != -1`)
+            if(wayLocalOrder !== -1){
+                console.log(`************* wayLocalOrder != -1`)
+                if(wayLocalOrder !== wayOrder){
+                    console.log(`************* wayLocalOrder !== wayOrder: ${wayLocalOrder} -> ${wayOrder}`)
+                    await this.routeWayModel.update(
+                        {
+                            input: {
+                                orderedPosition: wayOrder
+                            },
+                            routeId,
+                            wayId
+                        }
+                    )
+                }
+            } else {
+                console.log(`************* wayLocalOrder === -1`)
+                await this.routeWayModel.create({
+                    input: {
+                        orderedPosition: wayOrder
+                    },
+                    routeId,
+                    wayId
+                })
             }
-        } else {
-            await this.routeWayModel.create({
-                input: {
-                    orderedPosition: wayOrder
-                },
-                routeId,
-                wayId
-            })
         }
+        
     }
 
     getRouteById = async ({ id }) => {
@@ -146,18 +171,26 @@ export class RouteService {
                 union
             })
         }
-        return {
+        const allRoute = {
             ...route,
-            bbox: [
-                route.minLon,
-                route.minLat,
-                route.maxLon,
-                route.maxLat
-            ],
             ways,
             union,
             orderedWayIds
         }
+        if(allRoute.minLon && allRoute.maxLon && allRoute.minLat && allRoute.maxLat){
+            allRoute.bbox = [
+                route.minLon,
+                route.minLat,
+                route.maxLon,
+                route.maxLat
+            ]
+        }
+        return allRoute
+    }
+
+    getRouteWithExecutionsById = async ({ id }) => {
+        const route = await getRouteById({ id })
+
     }
 
     formatDataForWay = async ({ routeId, routeWay, orderedWayIds, ways, union }) => {

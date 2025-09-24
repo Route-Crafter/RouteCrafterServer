@@ -32,7 +32,6 @@ const routeWayExecutionUnionSegmentModel = new RouteWayExecutionUnionSegmentMode
 const countryController = new CountryController({ countryModel, validateCountry })
 const stateController = new StateController({ stateModel, validateState })
 const cityController = new CityController({ cityModel, validateCity })
-const routeController = new RouteController({ countryModel, stateModel, cityModel, routeModel, validateRoute })
 
 const routeService = new RouteService({
     routeModel,
@@ -50,6 +49,15 @@ const geoAggregationAdapter = new GeoAggregationAdapter({
 })
 const geoAggregationService = new GeoAggregationService({
     adapter: geoAggregationAdapter
+})
+const routeController = new RouteController({
+    countryModel,
+    stateModel,
+    cityModel,
+    routeModel,
+    routeService,
+    geoAggregationService,
+    validateRoute
 })
 const routeExecutionController = new RouteExecutionController({
     routeExecutionModel,
