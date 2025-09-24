@@ -30,8 +30,9 @@ export const createApp = ({
     app.use('/routes/:routeId', createRouteDetailRouter({routeController, routeExecutionController}))
     app.use('/executions/:id', createExecutionDetailRouter({routeExecutionController}))
 
-    const PORT = process.env.PORT ?? 1234
-    app.listen(PORT, () => {
+    const HOST = process.env.IP || process.env.HOST || '0.0.0.0'
+    const PORT = Number(process.env.PORT || 3000);
+    app.listen(PORT, HOST, () => {
         console.log(`Server listening on ${(process.env.BASE_URL ?? 'localhost://')+PORT}`)
     })
 }
