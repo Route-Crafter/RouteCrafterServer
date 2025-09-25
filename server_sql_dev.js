@@ -12,7 +12,7 @@ import { GeoAggregationService } from './src/services/geo_aggregation.js'
 import { RouteService } from './src/services/route.js'
 
 const connection = await mysql.createConnection({
-    host: 'mysql-routecrafter.alwaysdata.net',
+    host: '127.0.0.1',
     user: 'root',
     database: 'routesdb',
     password: '',
