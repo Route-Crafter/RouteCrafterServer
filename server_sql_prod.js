@@ -12,6 +12,8 @@ import { GeoAggregationAdapter } from './src/adapters/geo_aggregation_adapter.js
 import { GeoAggregationService } from './src/services/geo_aggregation.js'
 import { RouteService } from './src/services/route.js'
 
+console.log(`************************ sql connection: ${JSON.stringify(process.env)}`)
+
 const connection = await mysql.createConnection({
     host: process.env.DB_HOST,
     database: process.env.DB_NAME,
