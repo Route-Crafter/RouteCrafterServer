@@ -3,16 +3,12 @@ export class RouteExecutionController{
         routeExecutionModel,
         validateInitRouteExecution,
         validateEndRouteExecution,
-        routeExecutionPointModel,
-        routeService,
-        geoAggregationService
+        routeExecutionPointModel
     }){
         this.routeExecutionModel = routeExecutionModel
         this.validateInitRouteExecution = validateInitRouteExecution
         this.validateEndRouteExecution = validateEndRouteExecution
-        this.routeExecutionPointModel = routeExecutionPointModel,
-        this.routeService = routeService
-        this.geoAggregationService = geoAggregationService
+        this.routeExecutionPointModel = routeExecutionPointModel
     }
 
     getAllByRouteId = async (req, res) => {
@@ -62,7 +58,6 @@ export class RouteExecutionController{
 
     update = async (req, res) => {
         const { id } = req.params
-        const { routeId } = req.query
         const result = this.validateEndRouteExecution(req.body)
         if(result.error){
             return res.status(400).json({
@@ -90,20 +85,6 @@ export class RouteExecutionController{
         return res.status(201).json({
             ...updatedExecution,
             points: createdPoints
-        })
-    }
-
-    //TODO: Implementar cuando esté terminado
-    updateRoute = async ({ routeId, points }) => {
-        const route = await this.routeService.getRouteById({ id: routeId })
-        await this.geoAggregationService.insertPointsInToRoute({ points, route })
-        // Invalidar cache y guardar
-        route.polylineCache = null;
-        route.version = (route.version || 0) + 1;
-        route.updatedAt = new Date().toISOString();
-        await this.routeService.updateRoute({
-            input: route,
-            id: routeId
         })
     }
 }
