@@ -109,6 +109,96 @@ routecrafter-server/
 
 ---
 
+## 🔌 API – Rutas disponibles
+
+La API expone endpoints REST para la gestión jerárquica de la información geográfica y de los recorridos registrados por los usuarios.
+
+La jerarquía del sistema es la siguiente:
+
+Donde:
+
+- **Route** representa una ruta lógica de bus
+- **Execution** representa un recorrido real realizado por un usuario sobre una ruta
+
+---
+
+### 🌍 Countries
+
+- `GET /countries`  
+  Obtiene la lista de países disponibles.
+
+- `POST /countries`  
+  Crea un nuevo país.
+
+- `DELETE /countries/:countryId`  
+  Elimina un país.
+
+---
+
+### 🗺️ States
+
+- `GET /countries/:countryId/states`  
+  Obtiene los estados/departamentos de un país.
+
+- `POST /countries/:countryId/states`  
+  Crea un nuevo estado dentro de un país.
+
+- `DELETE /states/:stateId`  
+  Elimina un estado.
+
+---
+
+### 🏙️ Cities
+
+- `GET /states/:stateId/cities`  
+  Obtiene las ciudades de un estado.
+
+- `POST /states/:stateId/cities`  
+  Crea una nueva ciudad.
+
+- `DELETE /cities/:cityId`  
+  Elimina una ciudad.
+
+---
+
+### 🚌 Routes
+
+- `GET /cities/:cityId/routes`  
+  Obtiene las rutas asociadas a una ciudad.
+
+- `POST /cities/:cityId/routes`  
+  Crea una nueva ruta de bus.
+
+- `DELETE /routes/:routeId`  
+  Elimina una ruta.
+
+- `GET /routes`  
+  Obtiene todas las rutas registradas en el sistema.
+
+---
+
+### 🚶 Executions (Recorridos)
+
+Un **execution** representa un recorrido parcial o completo realizado por un usuario sobre una ruta específica.
+
+- `GET /routes/:routeId/executions`  
+  Obtiene todos los recorridos registrados para una ruta.
+
+- `POST /routes/:routeId/executions`  
+  Registra un nuevo recorrido para una ruta.
+
+- `PATCH /executions/:executionId`  
+  Actualiza un recorrido existente (para marcar su finalización).
+
+- `DELETE /executions/:executionId`  
+  Elimina un recorrido.
+
+---
+
+> ⚠️ **Nota**  
+> Actualmente, la API devuelve únicamente los recorridos individuales registrados por los usuarios.  
+> La unificación de múltiples recorridos en una ruta consolidada se encuentra en fase de pruebas y aún no está disponible.
+
 ## 🚧 Estado actual del proyecto
 
 Funcionalidades disponibles:
@@ -119,7 +209,7 @@ Funcionalidades disponibles:
 
 ✅ Registro de recorridos asociados a una ruta
 
-✅ Consulta de recorridos por ruta
+✅ Consulta de rutas y recorridos por ruta
 
 ✅ Persistencia completa en base de datos
 
