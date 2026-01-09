@@ -7,7 +7,7 @@ import { CountryController, StateController, CityController, RouteController, Ro
 const connection = await mysql.createConnection({
     host: '127.0.0.1',
     user: 'root',
-    database: 'routesdb',
+    database: 'routecrafterdb',
     password: '',
     port: 3306
 })

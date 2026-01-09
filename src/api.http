@@ -56,7 +56,7 @@ Content-Type: application/json
 }
 
 ### Obtener una ruta por id
-GET http://localhost:1234/routes/e66f9621-d93a-4621-bed3-5cf75927bcdc
+GET http://localhost:1234/routes/7b9acca5-33ba-4d78-9392-2227de993163
 
 ### Eliminar una ruta
 DELETE http://localhost:1234/routes/6b77a104-164f-421f-8dec-1c15ebb8d60c
