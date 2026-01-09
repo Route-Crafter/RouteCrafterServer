@@ -5,6 +5,8 @@ import { CountryModel, StateModel, CityModel, RouteModel, RouteExecutionModel, R
 import { validateCountry, validateState, validateCity, validateRoute, validateInitRouteExecution, validateEndRouteExecution } from './src/schemas/schemas_export.js'
 import { CountryController, StateController, CityController, RouteController, RouteExecutionController } from './src/controllers/controllers_export.js'
 
+console.log(`************************ sql connection: ${JSON.stringify(process.env)}`)
+
 const connection = await mysql.createConnection({
     host: process.env.DB_HOST,
     database: process.env.DB_NAME,
