@@ -3,7 +3,7 @@ export class RouteExecutionController{
         routeExecutionModel,
         validateInitRouteExecution,
         validateEndRouteExecution,
-        routeExecutionPointModel
+        routeExecutionPointModel,
     }){
         this.routeExecutionModel = routeExecutionModel
         this.validateInitRouteExecution = validateInitRouteExecution
@@ -72,10 +72,6 @@ export class RouteExecutionController{
         const createdPoints = await this.routeExecutionPointModel.createList({
             inputs: points,
             routeExecutionId: id
-        })
-        await this.updateRoute({
-            routeId,
-            points: createdPoints
         })
         if(!updatedExecution || !createdPoints){
             return res.status(500).json({

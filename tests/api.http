@@ -71,7 +71,7 @@ Content-Type: application/json
 }
 
 ### Actualizar la ejecución de ruta para ingresar el endTime y los wayPoints
-PATCH http://localhost:1234/executions/1
+PATCH http://localhost:1234/executions/2
 Content-Type: application/json
 
 {
@@ -89,4 +89,4 @@ Content-Type: application/json
 }
 
 ### Eliminar una ejecución de ruta
-DELETE http://localhost:1234/executions/5
+DELETE http://localhost:1234/executions/1

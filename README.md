@@ -2,7 +2,8 @@
 
 Backend del sistema **RouteCrafter**, una plataforma colaborativa para la digitalización de rutas de buses a partir de los trayectos reales de los pasajeros.
 
-El servidor actúa como soporte para la app móvil, permitiendo registrar y consultar recorridos asociados a una ruta específica. La unificación de recorridos en una ruta completa se encuentra actualmente en fase de pruebas.
+El servidor actúa como soporte para la app móvil, permitiendo registrar y consultar recorridos asociados a una ruta específica.  
+Actualmente, el sistema expone una **versión estable de la API**, enfocada en el registro y consulta de recorridos individuales.
 
 ---
 
@@ -12,10 +13,10 @@ RouteCrafter funciona bajo un modelo de **crowdsourcing**:
 
 - Un pasajero se sube a un bus y registra un recorrido parcial de una ruta.
 - El pasajero indica explícitamente a qué **ruta** pertenece ese recorrido.
-- Cada pasajero puede registrar distintos trayectos de la misma ruta (subidas y bajadas en puntos diferentes).
-- El servidor almacena estos recorridos de forma independiente.
+- Distintos pasajeros pueden registrar trayectos diferentes de la misma ruta.
+- El servidor almacena estos recorridos de forma independiente y persistente.
 
-En una etapa posterior, estos recorridos podrán ser unificados para construir una ruta completa de inicio a fin.
+Estos recorridos constituyen la base para una futura etapa de procesamiento geoespacial que permitirá construir rutas completas a partir de múltiples trayectos parciales.
 
 ---
 
@@ -39,6 +40,8 @@ Base de datos (MySQL)
 - **mysql2** – Cliente MySQL para Node.js
 - **dotenv** – Manejo de variables de entorno
 - **UUID** – Identificadores únicos
+- **Zod** – Validación de datos de entrada
+- **Jest** – Tests unitarios
 
 ---
 
@@ -47,16 +50,20 @@ Base de datos (MySQL)
 routecrafter-server/
 │
 ├── src/
-│ ├── adapters/ # Configuración de base de datos y entorno
-│ ├── routes/ # Definición de endpoints
-│ ├── controllers/ # Controladores de la API
-│ ├── services/ # Lógica de negocio
-│ ├── models/ # Acceso a datos (MySQL)
+| ├── config/ # Configuración de base de datos y entorno
+| ├── controllers/ # Controladores de la API
 │ ├── middlewares/ # Validaciones y middlewares
+│ ├── models/ # Modelos de entidades de DB
+│ ├── routes/ # Definición de endpoints
+| ├── schemas/ # Esquemas de validación de requests
 │ └── app.js # Configuración de Express
 │
 ├── database/
 │ └── schema.sql # Esquema de la base de datos
+│
+├── tests/ # Tests unitarios y tests API End-to-End (manual)
+│
+├── .github/workflows # Workflows de github (tests checks)
 │
 ├── .env.example
 ├── package.json
@@ -80,25 +87,51 @@ routecrafter-server/
 
 ---
 
+## 🧪 Correr tests
+
+1. Tests unitarios
+
+   ```bash
+    npm run test
+
+2. Tests API End-to-End (manual)
+
+    Pasos:
+    1. Correr el servidor: npm run dev
+    2. Ejecutar los tests uno por uno en el archivo tests/api.http
+
+---
+
 ## 🚧 Estado actual del proyecto
 
 Funcionalidades disponibles:
 
-- ✅ Creación de rutas
+✅ Creación y gestión de países, estados y ciudades
 
-- ✅ Registro de recorridos asociados a una ruta
+✅ Creación de rutas
 
-- ✅ Consulta de recorridos por ruta
+✅ Registro de recorridos asociados a una ruta
 
-- ✅ Persistencia en base de datos
+✅ Consulta de recorridos por ruta
+
+✅ Persistencia completa en base de datos
+
+✅ API estable y funcional
+
+Esta rama representa la versión estable actual del backend.
 
 ---
 
-## Funcionalidades en desarrollo / prueba
+## Funcionalidades planificadas (roadmap)
 
-- 🧪 Unificación de recorridos en una ruta completa
+Las siguientes funcionalidades forman parte del núcleo conceptual de RouteCrafter, pero no están implementadas aún en main:
 
-- 🧪 Generación de geometría consolidada
+- 🔜 Unificación de recorridos en una ruta completa
 
-Actualmente no es posible obtener una ruta unificada.
-El sistema solo devuelve los recorridos individuales registrados por los usuarios.
+- 🔜 Geoaggregation de trayectorias GPS
+
+- 🔜 Generación de geometría consolidada de rutas
+
+- 🔜 Cálculo de tramos comunes y variaciones
+
+Estas capacidades se desarrollan de forma incremental en ramas de feature y futuras versiones del proyecto.
