@@ -231,4 +231,6 @@ Las siguientes funcionalidades forman parte del núcleo conceptual de RouteCraft
 
 - 🔜 Cálculo de tramos comunes y variaciones
 
+- 🔜 Sistema de autenticación y cuentas de usuario (login)
+
 Estas capacidades se desarrollan de forma incremental en ramas de feature y futuras versiones del proyecto.
