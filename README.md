@@ -79,11 +79,18 @@ routecrafter-server/
    ```bash
    npm install
 
-3. Crear el archivo .env a partir de .env.example
+3. Crear la base de datos y ejecutar el esquema SQL
 
-4. Crear la base de datos y ejecutar el esquema SQL
-5. Iniciar el servidor:
-    npm run dev
+    En modo desarrollo, el servidor se conecta a una base de datos MySQL local según la configuración definida en server_sql_dev.js.
+
+4. Elegir el modo de ejecución:
+   1. Modo desarrollo
+        Inicia el servidor usando la configuración local de MySQL:
+            npm run dev
+   2. Correr en producción
+      1. Crear el archivo .env a partir de .env.example y configurar las variables de entorno.
+      2. Iniciar el servidor:
+        npm start
 
 ---
 
