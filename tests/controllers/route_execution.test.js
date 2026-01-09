@@ -6,8 +6,6 @@ describe('RouteExecutionController', () => {
     let validateInitRouteExecutionMock
     let validateEndRouteExecutionMock
     let routeExecutionPointModelMock
-    let geoAggregationServiceMock
-    let routeServiceMock
     let routeExecutionController
 
     beforeEach(() => {
@@ -24,20 +22,11 @@ describe('RouteExecutionController', () => {
             getAllByRouteExecutionId: jest.fn(),
             createList: jest.fn()
         }
-        geoAggregationServiceMock = {
-            insertPointsInToRoute: jest.fn()
-        }
-        routeServiceMock = {
-            getRouteById: jest.fn(),
-            updateRoute: jest.fn()
-        }
         routeExecutionController = new RouteExecutionController({
             routeExecutionModel: routeExecutionModelMock,
             validateInitRouteExecution: validateInitRouteExecutionMock,
             validateEndRouteExecution: validateEndRouteExecutionMock,
-            routeExecutionPointModel: routeExecutionPointModelMock,
-            routeService: routeServiceMock,
-            geoAggregationService: geoAggregationServiceMock
+            routeExecutionPointModel: routeExecutionPointModelMock
         })
         res = {
             json: jest.fn().mockReturnThis(),
@@ -80,72 +69,6 @@ describe('RouteExecutionController', () => {
                     {routeExecutionId: rawRouteExecutions[1].id}
                 )
             expect(res.json(returnedRouteExecutions))
-        })
-    })
-
-    describe('updateRoute', () => {
-        let routeId
-        let points
-
-        beforeEach(() => {
-            routeId = 1
-            points = [
-                {lat: 1, lon: 1},
-                {lat: 2, lon: 2},
-                {lat: 3, lon: 3}
-            ]
-        })
-
-        it('Debe llamar los métodos requeridos', async () => {
-            const initialRoute = {
-                name: 'r1',
-                description: 'the r1',
-                bbox: [1, 2, 3, 4],
-                polylineCache: 'the cache',
-                version: 1
-            }
-            routeServiceMock.getRouteById.mockResolvedValue(initialRoute)
-            const updatedRoute = {
-                ...initialRoute,
-                version: 2,
-                ways: { 1: {name: 'way1'}},
-                union: { 1: [[1, 2], [3, 4]] }
-            }
-            jest.spyOn(geoAggregationServiceMock, 'insertPointsInToRoute')
-                .mockImplementationOnce(({ points, route }) => {
-                    route.ways = updatedRoute.ways
-                    route.union = updatedRoute.union
-                })
-            await routeExecutionController.updateRoute({ routeId, points })
-            expect(routeServiceMock.getRouteById).toHaveBeenNthCalledWith(
-                1,
-                {
-                    id: routeId
-                }
-            )
-            expect(geoAggregationServiceMock.insertPointsInToRoute).toHaveBeenNthCalledWith(
-                1,
-                {
-                    points,
-                    route: initialRoute
-                }
-            )
-            expect(routeServiceMock.updateRoute).toHaveBeenNthCalledWith(
-                1,
-                {
-                    input: expect.objectContaining({
-                        name: updatedRoute.name,
-                        description: updatedRoute.description,
-                        bbox: updatedRoute.bbox,
-                        polylineCache: null,
-                        version: updatedRoute.version,
-                        ways: updatedRoute.ways,
-                        union: updatedRoute.union
-                    }),
-                    id: routeId
-                }
-            )
-
         })
     })
 
@@ -245,7 +168,6 @@ describe('RouteExecutionController', () => {
         })
 
         it('Cuando los points sí se actualizaron', async () => {
-            routeExecutionController.updateRoute = jest.fn()
             const id = 100
             req.params = {
                 id
@@ -269,7 +191,6 @@ describe('RouteExecutionController', () => {
             }
             routeExecutionModelMock.update.mockResolvedValue(returnedUpdatedExecution)
             routeExecutionPointModelMock.createList.mockResolvedValue(points)
-            routeExecutionController.updateRoute = jest.fn()
             await routeExecutionController.update(req, res)
             expect(routeExecutionModelMock.update).toHaveBeenCalledWith({
                 input: {endTime: updatedExecution.endTime},
@@ -278,10 +199,6 @@ describe('RouteExecutionController', () => {
             expect(routeExecutionPointModelMock.createList).toHaveBeenCalledWith({
                 inputs: points,
                 routeExecutionId: id
-            })
-            expect(routeExecutionController.updateRoute).toHaveBeenCalledWith({
-                routeId,
-                points
             })
             expect(res.status).toHaveBeenCalledWith(201)
             expect(res.json).toHaveBeenCalledWith({

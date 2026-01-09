@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node server_sql_prod.js",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --testEnvironment=node",
-    "dev:sql": "node --watch server_sql_dev.js"
+    "dev": "node --watch server_sql_dev.js"
   },
   "author": "Jhonatan Amórtegui",
   "license": "ISC",
