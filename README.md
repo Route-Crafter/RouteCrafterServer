@@ -1,5 +1,11 @@
 # RouteCrafter – Backend Server
 
+> ⚠️ **Nota sobre esta rama**
+>
+> Esta rama contiene el desarrollo del feature de **unificación de recorridos (geoaggregation)**.
+> La funcionalidad se encuentra **en desarrollo y fase de pruebas** y **no está lista para producción**.
+> Para la versión estable, consultar la rama `main`.
+
 Backend del sistema **RouteCrafter**, una plataforma colaborativa para la digitalización de rutas de buses a partir de los trayectos reales de los pasajeros.
 
 El servidor actúa como soporte para la app móvil, permitiendo registrar y consultar recorridos asociados a una ruta específica. La unificación de recorridos en una ruta completa se encuentra actualmente en fase de pruebas.
@@ -47,16 +53,19 @@ Base de datos (MySQL)
 routecrafter-server/
 │
 ├── src/
-│ ├── adapters/ # Configuración de base de datos y entorno
-│ ├── routes/ # Definición de endpoints
-│ ├── controllers/ # Controladores de la API
-│ ├── services/ # Lógica de negocio
-│ ├── models/ # Acceso a datos (MySQL)
+│ ├── adapters/ # Adaptadores de información (geo agrecación)
+| ├── config/ # Configuración de base de datos y entorno
+| ├── controllers/ # Controladores de la API
 │ ├── middlewares/ # Validaciones y middlewares
+│ ├── models/ # Modelos de entidades de DB
+│ ├── routes/ # Definición de endpoints
+| ├── schemas/ # Esquemas de validación de requests
+│ ├── services/ # Lógica de negocio
 │ └── app.js # Configuración de Express
 │
 ├── database/
 │ └── schema.sql # Esquema de la base de datos
+├── tests/ # Tests unitarios y tests API End-to-End (manual)
 │
 ├── .env.example
 ├── package.json
@@ -76,11 +85,14 @@ routecrafter-server/
 
 4. Crear la base de datos y ejecutar el esquema SQL
 5. Iniciar el servidor:
-    npm run dev
+    npm run dev:sql
 
 ---
 
 ## 🚧 Estado actual del proyecto
+
+Esta rama incluye trabajo experimental relacionado con la unificación de recorridos.
+Las APIs y el modelo de datos pueden cambiar sin previo aviso.
 
 Funcionalidades disponibles:
 
