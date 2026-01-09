@@ -47,6 +47,7 @@ Base de datos (MySQL)
 
 ## 📂 Estructura del proyecto
 
+```text
 routecrafter-server/
 │
 ├── src/
@@ -68,6 +69,7 @@ routecrafter-server/
 ├── .env.example
 ├── package.json
 └── README.md
+```
 
 ---
 
